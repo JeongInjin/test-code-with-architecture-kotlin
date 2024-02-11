@@ -6,7 +6,7 @@ import com.me.injin.testcodewitharchitecturekotlin.user.domain.UserCreate
 import com.me.injin.testcodewitharchitecturekotlin.user.domain.UserStatus
 import com.me.injin.testcodewitharchitecturekotlin.user.domain.UserUpdate
 import com.me.injin.testcodewitharchitecturekotlin.user.infrastructure.UserEntity
-import com.me.injin.testcodewitharchitecturekotlin.user.infrastructure.UserRepository
+import com.me.injin.testcodewitharchitecturekotlin.user.service.port.UserRepository
 import lombok.RequiredArgsConstructor
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSender
@@ -61,23 +61,19 @@ class UserService(
 
     @Transactional
     fun login(id: Long) {
-        userRepository.findById(id).orElseThrow {
-            ResourceNotFoundException("User", id.toString())
-        }?.also { userEntity ->
-            userEntity.lastLoginAt = Clock.systemUTC().millis()
-        }
+        userRepository.findById(id).also { userEntity ->
+            userEntity?.lastLoginAt = Clock.systemUTC().millis()
+        } ?: throw ResourceNotFoundException("User", id.toString())
     }
 
     @Transactional
     fun verifyEmail(id: Long, certificationCode: String) {
-        userRepository.findById(id).orElseThrow {
-            ResourceNotFoundException("User", id.toString())
-        }?.also { userEntity ->
-            if (certificationCode != userEntity.certificationCode) {
+        userRepository.findById(id).also { userEntity ->
+            if (certificationCode != userEntity!!.certificationCode) {
                 throw CertificationCodeNotMatchedException()
             }
             userEntity.status = UserStatus.ACTIVE
-        }
+        } ?: throw ResourceNotFoundException("User", id.toString())
     }
 
     private fun sendCertificationEmail(email: String, certificationUrl: String) {

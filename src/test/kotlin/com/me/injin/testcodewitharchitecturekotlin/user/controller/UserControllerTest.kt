@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.me.injin.testcodewitharchitecturekotlin.user.domain.UserStatus
 import com.me.injin.testcodewitharchitecturekotlin.user.domain.UserUpdate
 import com.me.injin.testcodewitharchitecturekotlin.user.infrastructure.UserEntity
-import com.me.injin.testcodewitharchitecturekotlin.user.infrastructure.UserRepository
+import com.me.injin.testcodewitharchitecturekotlin.user.infrastructure.UserJpaRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -27,7 +27,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 )
 class UserControllerTest(
     @Autowired private val mockMvc: MockMvc,
-    @Autowired private val userRepository: UserRepository,
+    @Autowired private val userJpaRepository: UserJpaRepository,
 ) {
 
     private val objectMapper = ObjectMapper()
@@ -66,7 +66,7 @@ class UserControllerTest(
                 .queryParam("certificationCode", "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
         )
             .andExpect(MockMvcResultMatchers.status().isFound())
-        val userEntity: UserEntity = userRepository.findById(1L).get()
+        val userEntity: UserEntity = userJpaRepository.findById(1L).get()
         assertThat(userEntity.status).isEqualTo(UserStatus.ACTIVE)
     }
 

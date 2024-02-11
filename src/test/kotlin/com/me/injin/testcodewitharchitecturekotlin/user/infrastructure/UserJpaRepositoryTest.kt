@@ -11,8 +11,8 @@ import java.util.*
 
 @DataJpaTest(showSql = true)
 @Sql("/sql/user-repository-test-data.sql")
-class UserRepositoryTest(
-    @Autowired private val userRepository: UserRepository,
+class UserJpaRepositoryTest(
+    @Autowired private val userJpaRepository: UserJpaRepository,
 ) {
 
     @Test
@@ -20,7 +20,7 @@ class UserRepositoryTest(
     fun `findByIdAndStatus 로 유저 데이터를 찾아올 수 있다`() {
         //given
         //when
-        val result = userRepository.findByIdAndStatus(1L, UserStatus.ACTIVE)
+        val result = userJpaRepository.findByIdAndStatus(1L, UserStatus.ACTIVE)
 
         //then
         assertThat(result).isNotNull()
@@ -31,7 +31,7 @@ class UserRepositoryTest(
     fun `findByIdAndStatus 데이터가 없으면 null 을 반환한다`() {
         //given
         //when
-        val result = userRepository.findByIdAndStatus(1L, UserStatus.PENDING)
+        val result = userJpaRepository.findByIdAndStatus(1L, UserStatus.PENDING)
 
         //then
         assertThat(result).isNull()
@@ -42,7 +42,7 @@ class UserRepositoryTest(
     fun `findByEmailAndStatus 로 유저 데이터를 찾아올 수 있다`() {
         //given
         //when
-        val result = userRepository.findByEmailAndStatus("injin.dev@gmail.com", UserStatus.ACTIVE)
+        val result = userJpaRepository.findByEmailAndStatus("injin.dev@gmail.com", UserStatus.ACTIVE)
 
         //then
         assertThat(result).isNotNull()
@@ -53,7 +53,7 @@ class UserRepositoryTest(
     fun `findByEmailAndStatus 데이터가 없으면 null 을 반환한다`() {
         //given
         //when
-        val result = userRepository.findByEmailAndStatus("injin.dev@gmail.com", UserStatus.PENDING)
+        val result = userJpaRepository.findByEmailAndStatus("injin.dev@gmail.com", UserStatus.PENDING)
 
         //then
         assertThat(result).isNull()

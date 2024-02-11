@@ -4,7 +4,7 @@ import com.me.injin.testcodewitharchitecturekotlin.common.domain.exception.Resou
 import com.me.injin.testcodewitharchitecturekotlin.post.domain.PostCreate
 import com.me.injin.testcodewitharchitecturekotlin.post.domain.PostUpdate
 import com.me.injin.testcodewitharchitecturekotlin.post.infrastructure.PostEntity
-import com.me.injin.testcodewitharchitecturekotlin.post.infrastructure.PostRepository
+import com.me.injin.testcodewitharchitecturekotlin.post.service.port.PostRepository
 import com.me.injin.testcodewitharchitecturekotlin.user.infrastructure.UserEntity
 import com.me.injin.testcodewitharchitecturekotlin.user.service.UserService
 import org.springframework.stereotype.Service
@@ -17,7 +17,7 @@ class PostService(
 ) {
 
     fun getById(id: Long): PostEntity {
-        val postEntity: PostEntity? = postRepository.findById(id).orElse(null)
+        val postEntity: PostEntity? = postRepository.findById(id)
         return postEntity ?: throw ResourceNotFoundException("Posts", id.toString())
     }
 
