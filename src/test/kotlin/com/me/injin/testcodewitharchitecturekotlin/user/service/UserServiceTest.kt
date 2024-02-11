@@ -2,9 +2,9 @@ package com.me.injin.testcodewitharchitecturekotlin.user.service
 
 import com.me.injin.testcodewitharchitecturekotlin.common.domain.exception.CertificationCodeNotMatchedException
 import com.me.injin.testcodewitharchitecturekotlin.common.domain.exception.ResourceNotFoundException
+import com.me.injin.testcodewitharchitecturekotlin.user.domain.User
 import com.me.injin.testcodewitharchitecturekotlin.user.domain.UserStatus
 import com.me.injin.testcodewitharchitecturekotlin.user.domain.UserUpdate
-import com.me.injin.testcodewitharchitecturekotlin.user.infrastructure.UserEntity
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.assertj.core.api.AssertionsForClassTypes
@@ -79,7 +79,7 @@ class UserServiceTest(
 
         // then
         assertThatThrownBy {
-            val result: UserEntity = userService.getById(2)
+            val result: User = userService.getById(2)
         }.isInstanceOf(ResourceNotFoundException::class.java)
     }
 

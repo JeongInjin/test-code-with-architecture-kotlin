@@ -1,5 +1,6 @@
 package com.me.injin.testcodewitharchitecturekotlin.post.infrastructure
 
+import com.me.injin.testcodewitharchitecturekotlin.post.domain.Post
 import com.me.injin.testcodewitharchitecturekotlin.user.infrastructure.UserEntity
 import jakarta.persistence.*
 
@@ -22,4 +23,26 @@ class PostEntity(
     @ManyToOne
     @JoinColumn(name = "user_id")
     var writer: UserEntity,
-)
+) {
+    fun toModel(): Post {
+        return Post(
+            id = id,
+            content = content,
+            createdAt = createdAt,
+            modifiedAt = modifiedAt,
+            writer = writer.toModel(),
+        )
+    }
+
+    companion object {
+        fun fromModel(post: Post): PostEntity {
+            return PostEntity(
+                id = post.id,
+                content = post.content,
+                createdAt = post.createdAt,
+                modifiedAt = post.modifiedAt,
+                writer = UserEntity.fromModel(post.writer),
+            )
+        }
+    }
+}
