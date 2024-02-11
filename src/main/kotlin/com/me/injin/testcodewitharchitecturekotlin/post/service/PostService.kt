@@ -1,14 +1,13 @@
 package com.me.injin.testcodewitharchitecturekotlin.post.service
 
 import com.me.injin.testcodewitharchitecturekotlin.common.domain.exception.ResourceNotFoundException
+import com.me.injin.testcodewitharchitecturekotlin.post.domain.Post
 import com.me.injin.testcodewitharchitecturekotlin.post.domain.PostCreate
 import com.me.injin.testcodewitharchitecturekotlin.post.domain.PostUpdate
-import com.me.injin.testcodewitharchitecturekotlin.post.infrastructure.PostEntity
 import com.me.injin.testcodewitharchitecturekotlin.post.service.port.PostRepository
-import com.me.injin.testcodewitharchitecturekotlin.user.infrastructure.UserEntity
+import com.me.injin.testcodewitharchitecturekotlin.user.domain.User
 import com.me.injin.testcodewitharchitecturekotlin.user.service.UserService
 import org.springframework.stereotype.Service
-import java.time.Clock
 
 @Service
 class PostService(
@@ -16,27 +15,21 @@ class PostService(
     val userService: UserService,
 ) {
 
-    fun getById(id: Long): PostEntity {
-        val postEntity: PostEntity? = postRepository.findById(id)
-        return postEntity ?: throw ResourceNotFoundException("Posts", id.toString())
+    fun getById(id: Long): Post {
+        val post: Post? = postRepository.findById(id)
+        return post ?: throw ResourceNotFoundException("Posts", id.toString())
     }
 
 
-    fun create(postCreate: PostCreate): PostEntity {
-        val userEntity: UserEntity = userService.getById(postCreate.writerId)
-        val postEntity = PostEntity(
-            writer = userEntity,
-            content = postCreate.content,
-            createdAt = Clock.systemUTC().millis()
-        )
-        return postRepository.save(postEntity)
+    fun create(postCreate: PostCreate): Post {
+        val writer: User = userService.getById(postCreate.writerId)
+        val post = Post.from(writer, postCreate)
+        return postRepository.save(post)
     }
 
-    fun update(id: Long, postUpdate: PostUpdate): PostEntity {
-        val postEntity = getById(id).also { post ->
-            post.content = postUpdate.content
-            post.modifiedAt = Clock.systemUTC().millis()
-        }
-        return postRepository.save(postEntity)
+    fun update(id: Long, postUpdate: PostUpdate): Post {
+        var post = getById(id)
+        post = post.update(postUpdate)
+        return postRepository.save(post)
     }
 }

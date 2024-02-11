@@ -1,5 +1,6 @@
 package com.me.injin.testcodewitharchitecturekotlin.post.infrastructure
 
+import com.me.injin.testcodewitharchitecturekotlin.post.domain.Post
 import com.me.injin.testcodewitharchitecturekotlin.post.service.port.PostRepository
 import org.springframework.stereotype.Repository
 
@@ -7,11 +8,11 @@ import org.springframework.stereotype.Repository
 class PostRepositoryImpl(
     private val postJpaRepository: PostJpaRepository,
 ) : PostRepository {
-    override fun findById(id: Long): PostEntity? {
-        return postJpaRepository.findById(id).orElse(null)
+    override fun findById(id: Long): Post? {
+        return postJpaRepository.findById(id).map(PostEntity::toModel).orElse(null)
     }
 
-    override fun save(postEntity: PostEntity): PostEntity {
-        return postJpaRepository.save(postEntity)
+    override fun save(post: Post): Post {
+        return postJpaRepository.save(PostEntity.fromModel(post)).toModel()
     }
 }
