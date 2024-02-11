@@ -8,8 +8,6 @@ import com.me.injin.testcodewitharchitecturekotlin.user.domain.UserUpdate
 import com.me.injin.testcodewitharchitecturekotlin.user.infrastructure.UserEntity
 import com.me.injin.testcodewitharchitecturekotlin.user.service.port.UserRepository
 import lombok.RequiredArgsConstructor
-import org.springframework.mail.SimpleMailMessage
-import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.Clock
@@ -18,8 +16,8 @@ import java.util.*
 @Service
 @RequiredArgsConstructor
 class UserService(
-    val userRepository: UserRepository,
-    val mailSender: JavaMailSender,
+    private val userRepository: UserRepository,
+    private val certificationService: CertificationService,
 ) {
 
     fun getByEmail(email: String?): UserEntity {
@@ -43,9 +41,7 @@ class UserService(
             certificationCode = UUID.randomUUID().toString()
         )
         userEntity = userRepository.save(userEntity)
-        val certificationUrl = generateCertificationUrl(userEntity)
-        println("certificationUrl: $certificationUrl")
-        sendCertificationEmail(userCreate.email, certificationUrl)
+        certificationService.send(userEntity.email, userEntity.id!!, userEntity.certificationCode)
         return userEntity
     }
 
@@ -75,19 +71,4 @@ class UserService(
             userEntity.status = UserStatus.ACTIVE
         } ?: throw ResourceNotFoundException("User", id.toString())
     }
-
-    private fun sendCertificationEmail(email: String, certificationUrl: String) {
-        val message = SimpleMailMessage().apply {
-            setTo(email)
-            subject = "Please certify your email address"
-            text = "Please click the following link to certify your email address: $certificationUrl"
-        }
-        try {
-            mailSender.send(message)
-        } catch (e: Exception) {
-        }
-    }
-
-    private fun generateCertificationUrl(userEntity: UserEntity): String =
-        "http://localhost:8080/api/users/${userEntity.id}/verify?certificationCode=${userEntity.certificationCode}"
 }
