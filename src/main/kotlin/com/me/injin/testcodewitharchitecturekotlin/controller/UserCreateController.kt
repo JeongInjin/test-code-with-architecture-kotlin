@@ -22,7 +22,7 @@ class UserCreateController(
 
     @PostMapping
     fun createUser(@RequestBody userCreateDto: UserCreateDto): ResponseEntity<UserResponse> {
-        val userEntity: UserEntity = userService.createUser(userCreateDto)
+        val userEntity: UserEntity = userService.create(userCreateDto)
         return ResponseEntity
             .status(HttpStatus.CREATED)
             .body(userController!!.toResponse(userEntity))

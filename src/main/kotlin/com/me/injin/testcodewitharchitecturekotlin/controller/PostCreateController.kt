@@ -24,6 +24,6 @@ class PostCreateController(
     fun createPost(@RequestBody postCreateDto: PostCreateDto): ResponseEntity<PostResponse> {
         return ResponseEntity
             .status(HttpStatus.CREATED)
-            .body(postController!!.toResponse(postService.createPost(postCreateDto)))
+            .body(postController!!.toResponse(postService.create(postCreateDto)))
     }
 }

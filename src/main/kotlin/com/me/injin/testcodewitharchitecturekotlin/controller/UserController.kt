@@ -26,7 +26,7 @@ class UserController(
     fun getUserById(@PathVariable id: Long): ResponseEntity<UserResponse> {
         return ResponseEntity
             .ok()
-            .body(toResponse(userService.getByIdOrElseThrow(id)))
+            .body(toResponse(userService.getById(id)))
     }
 
     @GetMapping("/{id}/verify")
@@ -64,7 +64,7 @@ class UserController(
         @RequestBody userUpdateDto: UserUpdateDto,
     ): ResponseEntity<MyProfileResponse> {
         var userEntity: UserEntity = userService.getByEmail(email)
-        userEntity = userService.updateUser(userEntity.id!!, userUpdateDto)
+        userEntity = userService.update(userEntity.id!!, userUpdateDto)
         return ResponseEntity
             .ok()
             .body(toMyProfileResponse(userEntity))

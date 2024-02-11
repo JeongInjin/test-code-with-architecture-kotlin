@@ -15,14 +15,14 @@ class PostService(
     val userService: UserService,
 ) {
 
-    fun getPostById(id: Long): PostEntity {
+    fun getById(id: Long): PostEntity {
         val postEntity: PostEntity? = postRepository.findById(id).orElse(null)
         return postEntity ?: throw ResourceNotFoundException("Posts", id.toString())
     }
 
 
-    fun createPost(postCreateDto: PostCreateDto): PostEntity {
-        val userEntity: UserEntity = userService.getByIdOrElseThrow(postCreateDto.writerId)
+    fun create(postCreateDto: PostCreateDto): PostEntity {
+        val userEntity: UserEntity = userService.getById(postCreateDto.writerId)
         val postEntity = PostEntity(
             writer = userEntity,
             content = postCreateDto.content,
@@ -31,8 +31,8 @@ class PostService(
         return postRepository.save(postEntity)
     }
 
-    fun updatePost(id: Long, postUpdateDto: PostUpdateDto): PostEntity {
-        val postEntity = getPostById(id).also { post ->
+    fun update(id: Long, postUpdateDto: PostUpdateDto): PostEntity {
+        val postEntity = getById(id).also { post ->
             post.content = postUpdateDto.content
             post.modifiedAt = Clock.systemUTC().millis()
         }
