@@ -2,7 +2,6 @@ package com.me.injin.testcodewitharchitecturekotlin.user.controller
 
 import com.me.injin.testcodewitharchitecturekotlin.user.controller.response.MyProfileResponse
 import com.me.injin.testcodewitharchitecturekotlin.user.controller.response.UserResponse
-import com.me.injin.testcodewitharchitecturekotlin.user.domain.User
 import com.me.injin.testcodewitharchitecturekotlin.user.domain.UserUpdate
 import com.me.injin.testcodewitharchitecturekotlin.user.infrastructure.UserEntity
 import com.me.injin.testcodewitharchitecturekotlin.user.service.UserService
@@ -27,7 +26,7 @@ class UserController(
     fun getUserById(@PathVariable id: Long): ResponseEntity<UserResponse> {
         return ResponseEntity
             .ok()
-            .body(UserResponse.from(userService.getById(id)))
+            .body(toResponse(userService.getById(id)))
     }
 
     @GetMapping("/{id}/verify")
@@ -48,11 +47,11 @@ class UserController(
             `in` = ParameterIn.HEADER
         ) @RequestHeader("EMAIL") email: String?, // 일반적으로 스프링 시큐리티를 사용한다면 UserPrincipal 에서 가져옵니다.
     ): ResponseEntity<MyProfileResponse> {
-        val user: User = userService.getByEmail(email)
-        userService.login(user.id!!)
+        val userEntity: UserEntity = userService.getByEmail(email)
+        userService.login(userEntity.id!!)
         return ResponseEntity
             .ok()
-            .body(MyProfileResponse.from(user))
+            .body(toMyProfileResponse(userEntity))
     }
 
     @PutMapping("/me")
@@ -64,11 +63,21 @@ class UserController(
         ) @RequestHeader("EMAIL") email: String,  // 일반적으로 스프링 시큐리티를 사용한다면 UserPrincipal 에서 가져옵니다.
         @RequestBody userUpdateDto: UserUpdate,
     ): ResponseEntity<MyProfileResponse> {
-        var user = userService.getByEmail(email)
-        user = userService.update(user.id!!, userUpdateDto)
+        var userEntity: UserEntity = userService.getByEmail(email)
+        userEntity = userService.update(userEntity.id!!, userUpdateDto)
         return ResponseEntity
             .ok()
-            .body(MyProfileResponse.from(user))
+            .body(toMyProfileResponse(userEntity))
+    }
+
+    fun toResponse(userEntity: UserEntity): UserResponse {
+        return UserResponse(
+            id = userEntity.id,
+            email = userEntity.email,
+            nickname = userEntity.nickname,
+            status = userEntity.status,
+            lastLoginAt = userEntity.lastLoginAt
+        )
     }
 
     fun toMyProfileResponse(userEntity: UserEntity): MyProfileResponse {

@@ -35,7 +35,7 @@ class UserCreateControllerTest(
 
     @Test
     @Throws(Exception::class)
-    fun `사용자는 회원 가입을 할 수 있고 회원가입된 사용자는 PENDING 상태이다`() {
+    fun `사용자는 회원 가입을 할 수있고 회원가입된 사용자는 PENDING 상태이다`() {
         // given
         val userCreate = UserCreate(
             email = "injin.dev@gmail.com",

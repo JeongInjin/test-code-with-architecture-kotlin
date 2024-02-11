@@ -17,12 +17,13 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/api/posts")
 class PostCreateController(
     val postService: PostService,
+    val postController: PostController,
 ) {
 
     @PostMapping
     fun createPost(@RequestBody postCreate: PostCreate): ResponseEntity<PostResponse> {
         return ResponseEntity
             .status(HttpStatus.CREATED)
-            .body(PostResponse.from(postService.create(postCreate)))
+            .body(postController!!.toResponse(postService.create(postCreate)))
     }
 }

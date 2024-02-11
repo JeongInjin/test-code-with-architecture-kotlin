@@ -30,7 +30,7 @@ class PostControllerTest(
     private val objectMapper = ObjectMapper()
 
     @Test
-    fun `사용자는 게시물을 단건 조회할 수 있다`() {
+    fun `사용자는 게시물을 단건 조회 할 수 있다`() {
         //given
         //when
         //then

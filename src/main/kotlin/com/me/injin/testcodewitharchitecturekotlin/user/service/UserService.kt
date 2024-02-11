@@ -1,14 +1,17 @@
 package com.me.injin.testcodewitharchitecturekotlin.user.service
 
+import com.me.injin.testcodewitharchitecturekotlin.common.domain.exception.CertificationCodeNotMatchedException
 import com.me.injin.testcodewitharchitecturekotlin.common.domain.exception.ResourceNotFoundException
-import com.me.injin.testcodewitharchitecturekotlin.user.domain.User
 import com.me.injin.testcodewitharchitecturekotlin.user.domain.UserCreate
 import com.me.injin.testcodewitharchitecturekotlin.user.domain.UserStatus
 import com.me.injin.testcodewitharchitecturekotlin.user.domain.UserUpdate
+import com.me.injin.testcodewitharchitecturekotlin.user.infrastructure.UserEntity
 import com.me.injin.testcodewitharchitecturekotlin.user.service.port.UserRepository
 import lombok.RequiredArgsConstructor
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Clock
+import java.util.*
 
 @Service
 @RequiredArgsConstructor
@@ -17,43 +20,55 @@ class UserService(
     private val certificationService: CertificationService,
 ) {
 
-    fun getByEmail(email: String?): User {
+    fun getByEmail(email: String?): UserEntity {
         return userRepository.findByEmailAndStatus(email, UserStatus.ACTIVE)
             ?: throw ResourceNotFoundException("Users", email!!)
 
     }
 
-    fun getById(id: Long): User {
+    fun getById(id: Long): UserEntity {
         return userRepository.findByIdAndStatus(id, UserStatus.ACTIVE)
             ?: throw ResourceNotFoundException("Users", id)
     }
 
     @Transactional
-    fun create(userCreate: UserCreate): User {
-        var user = User.from(userCreate)
-        user = userRepository.save(user)
-        certificationService.send(user.email, user.id!!, user.certificationCode)
-        return user
+    fun create(userCreate: UserCreate): UserEntity {
+        var userEntity = UserEntity(
+            email = userCreate.email,
+            nickname = userCreate.nickname,
+            address = userCreate.address,
+            status = UserStatus.PENDING,
+            certificationCode = UUID.randomUUID().toString()
+        )
+        userEntity = userRepository.save(userEntity)
+        certificationService.send(userEntity.email, userEntity.id!!, userEntity.certificationCode)
+        return userEntity
     }
 
     @Transactional
-    fun update(id: Long, userUpdate: UserUpdate): User {
-        val user = getById(id)
-        user.update(userUpdate)
-        return userRepository.save(user)
+    fun update(id: Long, userUpdate: UserUpdate): UserEntity {
+        val userEntity = getById(id)
+        userEntity.apply {
+            nickname = userUpdate.nickname
+            address = userUpdate.address
+        }
+        return userRepository.save(userEntity)
     }
 
     @Transactional
     fun login(id: Long) {
-        var user = userRepository.findById(id) ?: throw ResourceNotFoundException("User", id.toString())
-        user = user.login()
-        userRepository.save(user)
+        userRepository.findById(id).also { userEntity ->
+            userEntity?.lastLoginAt = Clock.systemUTC().millis()
+        } ?: throw ResourceNotFoundException("User", id.toString())
     }
 
     @Transactional
     fun verifyEmail(id: Long, certificationCode: String) {
-        var user = userRepository.findById(id) ?: throw ResourceNotFoundException("User", id.toString())
-        user = user.certificate(certificationCode)
-        userRepository.save(user)
+        userRepository.findById(id).also { userEntity ->
+            if (certificationCode != userEntity!!.certificationCode) {
+                throw CertificationCodeNotMatchedException()
+            }
+            userEntity.status = UserStatus.ACTIVE
+        } ?: throw ResourceNotFoundException("User", id.toString())
     }
 }

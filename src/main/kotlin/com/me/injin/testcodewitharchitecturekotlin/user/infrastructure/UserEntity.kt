@@ -1,6 +1,5 @@
 package com.me.injin.testcodewitharchitecturekotlin.user.infrastructure
 
-import com.me.injin.testcodewitharchitecturekotlin.user.domain.User
 import com.me.injin.testcodewitharchitecturekotlin.user.domain.UserStatus
 import jakarta.persistence.*
 
@@ -29,30 +28,4 @@ class UserEntity(
 
     @Column(name = "last_login_at")
     var lastLoginAt: Long? = null,
-) {
-    fun toModel(): User {
-        return User(
-            id = id,
-            email = email,
-            nickname = nickname,
-            address = address,
-            certificationCode = certificationCode,
-            status = status,
-            lastLoginAt = lastLoginAt,
-        )
-    }
-
-    companion object {
-        fun fromModel(user: User): UserEntity {
-            return UserEntity(
-                id = user.id,
-                email = user.email,
-                nickname = user.nickname,
-                address = user.address,
-                certificationCode = user.certificationCode,
-                status = user.status,
-                lastLoginAt = user.lastLoginAt,
-            )
-        }
-    }
-}
+)

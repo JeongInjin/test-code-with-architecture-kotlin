@@ -1,8 +1,8 @@
 package com.me.injin.testcodewitharchitecturekotlin.post.service.port
 
-import com.me.injin.testcodewitharchitecturekotlin.post.domain.Post
+import com.me.injin.testcodewitharchitecturekotlin.post.infrastructure.PostEntity
 
 interface PostRepository {
-    fun findById(id: Long): Post?
-    fun save(post: Post): Post
+    fun findById(id: Long): PostEntity?
+    fun save(postEntity: PostEntity): PostEntity
 }

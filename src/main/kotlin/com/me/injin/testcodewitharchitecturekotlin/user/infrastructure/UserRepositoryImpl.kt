@@ -1,6 +1,5 @@
 package com.me.injin.testcodewitharchitecturekotlin.user.infrastructure
 
-import com.me.injin.testcodewitharchitecturekotlin.user.domain.User
 import com.me.injin.testcodewitharchitecturekotlin.user.domain.UserStatus
 import com.me.injin.testcodewitharchitecturekotlin.user.service.port.UserRepository
 import org.springframework.stereotype.Repository
@@ -9,20 +8,20 @@ import org.springframework.stereotype.Repository
 class UserRepositoryImpl(
     private val userJpaRepository: UserJpaRepository,
 ) : UserRepository {
-    override fun findById(id: Long): User? {
-        return userJpaRepository.findById(id).map(UserEntity::toModel).orElse(null)
+    override fun findByIdAndStatus(id: Long, userStatus: UserStatus): UserEntity? {
+        return userJpaRepository.findByIdAndStatus(id, userStatus)
     }
 
-    override fun findByIdAndStatus(id: Long, userStatus: UserStatus): User? {
-        return userJpaRepository.findByIdAndStatus(id, userStatus)?.toModel()
+    override fun findByEmailAndStatus(email: String?, userStatus: UserStatus): UserEntity? {
+        return userJpaRepository.findByEmailAndStatus(email, userStatus)
     }
 
-    override fun findByEmailAndStatus(email: String?, userStatus: UserStatus): User? {
-        return userJpaRepository.findByEmailAndStatus(email, userStatus)?.toModel()
+    override fun save(userEntity: UserEntity): UserEntity {
+        return userJpaRepository.save(userEntity)
     }
 
-    override fun save(user: User): User {
-        return userJpaRepository.save(UserEntity.fromModel(user)).toModel()
+    override fun findById(id: Long): UserEntity? {
+        return userJpaRepository.findById(id).orElse(null)
     }
 
 }

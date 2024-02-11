@@ -38,9 +38,9 @@ class PostServiceTest(
         val result = postService.update(1L, postUpdate)
 
         //then
-        val post = postService.getById(1L)
-        assertThat(post.content).isEqualTo("hello world")
-        assertThat(post.modifiedAt).isGreaterThan(0)
+        val postEntity = postService.getById(1L)
+        assertThat(postEntity.content).isEqualTo("hello world")
+        assertThat(postEntity.modifiedAt).isGreaterThan(0)
     }
 
 }
