@@ -21,6 +21,7 @@ class HealthCheckControllerTest(
         //given
         //when
         //then
+        
         mockMvc.perform(get("/health_check.html"))
             .andExpect(status().isOk)
     }
