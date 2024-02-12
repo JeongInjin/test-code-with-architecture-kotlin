@@ -30,20 +30,8 @@ class UserEntity(
     @Column(name = "last_login_at")
     var lastLoginAt: Long? = null,
 ) {
-    fun toModel(): User {
-        return User(
-            id = id,
-            email = email,
-            nickname = nickname,
-            address = address,
-            certificationCode = certificationCode,
-            status = status,
-            lastLoginAt = lastLoginAt,
-        )
-    }
-
     companion object {
-        fun fromModel(user: User): UserEntity {
+        fun from(user: User): UserEntity {
             return UserEntity(
                 id = user.id,
                 email = user.email,
@@ -54,5 +42,17 @@ class UserEntity(
                 lastLoginAt = user.lastLoginAt,
             )
         }
+    }
+
+    fun to(): User {
+        return User(
+            id = id,
+            email = email,
+            nickname = nickname,
+            address = address,
+            certificationCode = certificationCode,
+            status = status,
+            lastLoginAt = lastLoginAt,
+        )
     }
 }

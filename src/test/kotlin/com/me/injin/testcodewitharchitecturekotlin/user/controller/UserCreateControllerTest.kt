@@ -21,7 +21,7 @@ class UserCreateControllerTest {
         )
 
         // when
-        val result = testContainer.userCreateController.createUser(userCreate)
+        val result = testContainer.userCreateController.create(userCreate)
 
         // then
         assertThat(result.statusCode).isEqualTo(HttpStatusCode.valueOf(201))

@@ -20,7 +20,7 @@ class UserCreateController(
 ) {
 
     @PostMapping
-    fun createUser(@RequestBody userCreate: UserCreate): ResponseEntity<UserResponse> {
+    fun create(@RequestBody userCreate: UserCreate): ResponseEntity<UserResponse> {
         val user: User = userService.create(userCreate)
         return ResponseEntity
             .status(HttpStatus.CREATED)

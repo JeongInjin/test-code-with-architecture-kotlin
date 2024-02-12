@@ -33,7 +33,7 @@ class PostCreateControllerTest {
         )
 
         // when
-        val result = testContainer.postCreateController.createPost(postCreate)
+        val result = testContainer.postCreateController.create(postCreate)
 
         // then
         assertThat(result.statusCode).isEqualTo(HttpStatusCode.valueOf(201))

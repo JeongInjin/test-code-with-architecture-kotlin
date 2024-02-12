@@ -24,25 +24,25 @@ class PostEntity(
     @JoinColumn(name = "user_id")
     var writer: UserEntity,
 ) {
-    fun toModel(): Post {
-        return Post(
-            id = id,
-            content = content,
-            createdAt = createdAt,
-            modifiedAt = modifiedAt,
-            writer = writer.toModel(),
-        )
-    }
-
     companion object {
-        fun fromModel(post: Post): PostEntity {
+        fun from(post: Post): PostEntity {
             return PostEntity(
                 id = post.id,
                 content = post.content,
                 createdAt = post.createdAt,
                 modifiedAt = post.modifiedAt,
-                writer = UserEntity.fromModel(post.writer),
+                writer = UserEntity.from(post.writer),
             )
         }
+    }
+
+    fun to(): Post {
+        return Post(
+            id = id,
+            content = content,
+            createdAt = createdAt,
+            modifiedAt = modifiedAt,
+            writer = writer.to(),
+        )
     }
 }

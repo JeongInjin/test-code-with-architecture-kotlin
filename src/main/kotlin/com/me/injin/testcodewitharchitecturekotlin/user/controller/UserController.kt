@@ -23,7 +23,7 @@ class UserController(
 ) {
     @ResponseStatus
     @GetMapping("/{id}")
-    fun getUserById(@PathVariable id: Long): ResponseEntity<UserResponse> {
+    fun getById(@PathVariable id: Long): ResponseEntity<UserResponse> {
         return ResponseEntity
             .ok()
             .body(UserResponse.from(userService.getById(id)))
@@ -62,10 +62,10 @@ class UserController(
             name = "EMAIL",
             `in` = ParameterIn.HEADER
         ) @RequestHeader("EMAIL") email: String,  // 일반적으로 스프링 시큐리티를 사용한다면 UserPrincipal 에서 가져옵니다.
-        @RequestBody userUpdateDto: UserUpdate,
+        @RequestBody userUpdate: UserUpdate,
     ): ResponseEntity<MyProfileResponse> {
         var user = userService.getByEmail(email)
-        user = userService.update(user.id!!, userUpdateDto)
+        user = userService.update(user.id!!, userUpdate)
         return ResponseEntity
             .ok()
             .body(MyProfileResponse.from(user))

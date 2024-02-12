@@ -22,7 +22,7 @@ class PostController(
     }
 
     @PutMapping("/{id}")
-    fun updatePost(@PathVariable id: Long, @RequestBody postUpdate: PostUpdate): ResponseEntity<PostResponse> {
+    fun update(@PathVariable id: Long, @RequestBody postUpdate: PostUpdate): ResponseEntity<PostResponse> {
         return ResponseEntity
             .ok()
             .body(PostResponse.from(postService.update(id, postUpdate)))

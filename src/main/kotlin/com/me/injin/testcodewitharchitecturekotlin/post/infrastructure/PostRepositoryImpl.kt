@@ -9,10 +9,10 @@ class PostRepositoryImpl(
     private val postJpaRepository: PostJpaRepository,
 ) : PostRepository {
     override fun findById(id: Long): Post? {
-        return postJpaRepository.findById(id).map(PostEntity::toModel).orElse(null)
+        return postJpaRepository.findById(id).map(PostEntity::to).orElse(null)
     }
 
     override fun save(post: Post): Post {
-        return postJpaRepository.save(PostEntity.fromModel(post)).toModel()
+        return postJpaRepository.save(PostEntity.from(post)).to()
     }
 }

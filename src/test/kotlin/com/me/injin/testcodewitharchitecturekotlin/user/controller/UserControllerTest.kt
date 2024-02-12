@@ -29,7 +29,7 @@ class UserControllerTest {
             )
         )
         // when
-        val result = testContainer.userController.getUserById(1L)
+        val result = testContainer.userController.getById(1L)
 
         // then
         assertThat(result.statusCode).isEqualTo(HttpStatus.valueOf(200))
@@ -46,7 +46,7 @@ class UserControllerTest {
         val testContainer = TestContainer()
         // when
         // then
-        assertThatThrownBy { testContainer.userController.getUserById(1L) }
+        assertThatThrownBy { testContainer.userController.getById(1L) }
             .isInstanceOf(RuntimeException::class.java)
     }
 

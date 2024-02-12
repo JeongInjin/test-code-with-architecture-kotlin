@@ -20,7 +20,7 @@ class PostCreateController(
 ) {
 
     @PostMapping
-    fun createPost(@RequestBody postCreate: PostCreate): ResponseEntity<PostResponse> {
+    fun create(@RequestBody postCreate: PostCreate): ResponseEntity<PostResponse> {
         return ResponseEntity
             .status(HttpStatus.CREATED)
             .body(PostResponse.from(postService.create(postCreate)))

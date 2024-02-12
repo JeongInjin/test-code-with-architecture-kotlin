@@ -86,7 +86,7 @@ class PostControllerTest {
         )
 
         // when
-        val result = testContainer.postController.updatePost(1L, PostUpdate(content = "foobar"))
+        val result = testContainer.postController.update(1L, PostUpdate(content = "foobar"))
 
         // then
         assertThat(result.statusCode).isEqualTo(HttpStatusCode.valueOf(200))
