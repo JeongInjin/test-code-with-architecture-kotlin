@@ -1,7 +1,7 @@
 package com.me.injin.testcodewitharchitecturekotlin.medium
 
 import com.me.injin.testcodewitharchitecturekotlin.post.domain.PostCreate
-import com.me.injin.testcodewitharchitecturekotlin.post.service.PostService
+import com.me.injin.testcodewitharchitecturekotlin.post.service.PostServiceImpl
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,8 +14,8 @@ import org.springframework.test.context.jdbc.SqlGroup
     Sql(value = ["/sql/user-service-test-data.sql"], executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
     Sql(value = ["/sql/delete-all-data.sql"], executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 )
-class PostServiceTest2(
-    @Autowired private val postService: PostService,
+class PostServiceImplTest2(
+    @Autowired private val postService: PostServiceImpl,
 ) {
 
     @Test

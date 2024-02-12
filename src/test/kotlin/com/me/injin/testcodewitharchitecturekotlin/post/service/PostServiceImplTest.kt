@@ -13,15 +13,15 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 
-class PostServiceTest {
+class PostServiceImplTest {
 
-    private lateinit var postService: PostService
+    private lateinit var postService: PostServiceImpl
 
     @BeforeEach
     fun setup() {
         val postRepository = FakePostRepository()
         val userRepository = FakeUserRepository()
-        postService = PostService(
+        postService = PostServiceImpl(
             postRepository = postRepository,
             userRepository = userRepository,
             clockHolder = TestClockHolder(123456789L)

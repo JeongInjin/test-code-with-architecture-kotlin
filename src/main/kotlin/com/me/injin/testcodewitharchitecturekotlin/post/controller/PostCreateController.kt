@@ -1,8 +1,8 @@
 package com.me.injin.testcodewitharchitecturekotlin.post.controller
 
+import com.me.injin.testcodewitharchitecturekotlin.post.controller.port.PostService
 import com.me.injin.testcodewitharchitecturekotlin.post.controller.response.PostResponse
 import com.me.injin.testcodewitharchitecturekotlin.post.domain.PostCreate
-import com.me.injin.testcodewitharchitecturekotlin.post.service.PostService
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

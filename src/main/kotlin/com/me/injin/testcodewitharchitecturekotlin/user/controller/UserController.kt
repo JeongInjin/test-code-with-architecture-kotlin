@@ -1,11 +1,10 @@
 package com.me.injin.testcodewitharchitecturekotlin.user.controller
 
+import com.me.injin.testcodewitharchitecturekotlin.user.controller.port.UserService
 import com.me.injin.testcodewitharchitecturekotlin.user.controller.response.MyProfileResponse
 import com.me.injin.testcodewitharchitecturekotlin.user.controller.response.UserResponse
 import com.me.injin.testcodewitharchitecturekotlin.user.domain.User
 import com.me.injin.testcodewitharchitecturekotlin.user.domain.UserUpdate
-import com.me.injin.testcodewitharchitecturekotlin.user.infrastructure.UserEntity
-import com.me.injin.testcodewitharchitecturekotlin.user.service.UserService
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.enums.ParameterIn
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -48,8 +47,9 @@ class UserController(
             `in` = ParameterIn.HEADER
         ) @RequestHeader("EMAIL") email: String?, // 일반적으로 스프링 시큐리티를 사용한다면 UserPrincipal 에서 가져옵니다.
     ): ResponseEntity<MyProfileResponse> {
-        val user: User = userService.getByEmail(email)
+        var user: User = userService.getByEmail(email)
         userService.login(user.id!!)
+        user = userService.getByEmail(email)
         return ResponseEntity
             .ok()
             .body(MyProfileResponse.from(user))
@@ -71,15 +71,4 @@ class UserController(
             .body(MyProfileResponse.from(user))
     }
 
-    fun toMyProfileResponse(userEntity: UserEntity): MyProfileResponse {
-        val myProfileResponse = MyProfileResponse(
-            id = userEntity.id,
-            email = userEntity.email,
-            nickname = userEntity.nickname,
-            status = userEntity.status,
-            address = userEntity.address,
-            lastLoginAt = userEntity.lastLoginAt
-        )
-        return myProfileResponse
-    }
 }

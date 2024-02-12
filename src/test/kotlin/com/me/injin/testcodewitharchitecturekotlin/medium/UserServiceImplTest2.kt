@@ -2,7 +2,7 @@ package com.me.injin.testcodewitharchitecturekotlin.medium
 
 import com.me.injin.testcodewitharchitecturekotlin.user.domain.UserCreate
 import com.me.injin.testcodewitharchitecturekotlin.user.domain.UserStatus
-import com.me.injin.testcodewitharchitecturekotlin.user.service.UserService
+import com.me.injin.testcodewitharchitecturekotlin.user.service.UserServiceImpl
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.any
@@ -14,8 +14,8 @@ import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSender
 
 @SpringBootTest
-class UserServiceTest2(
-    @Autowired private val userService: UserService,
+class UserServiceImplTest2(
+    @Autowired private val userService: UserServiceImpl,
 ) {
 
     @MockBean
