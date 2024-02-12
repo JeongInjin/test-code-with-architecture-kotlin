@@ -4,7 +4,7 @@ import com.me.injin.testcodewitharchitecturekotlin.common.domain.exception.Certi
 import com.me.injin.testcodewitharchitecturekotlin.common.service.port.ClockHolder
 import com.me.injin.testcodewitharchitecturekotlin.common.service.port.UuidHolder
 
-class User(
+data class User(
     var id: Long? = null,
     var email: String,
     var nickname: String,

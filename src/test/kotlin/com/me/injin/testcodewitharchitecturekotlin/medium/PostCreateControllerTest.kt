@@ -1,4 +1,4 @@
-package com.me.injin.testcodewitharchitecturekotlin.post.controller
+package com.me.injin.testcodewitharchitecturekotlin.medium
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.me.injin.testcodewitharchitecturekotlin.post.domain.PostCreate

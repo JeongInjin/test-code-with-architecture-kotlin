@@ -1,6 +1,7 @@
-package com.me.injin.testcodewitharchitecturekotlin.post.service
+package com.me.injin.testcodewitharchitecturekotlin.medium
 
 import com.me.injin.testcodewitharchitecturekotlin.post.domain.PostUpdate
+import com.me.injin.testcodewitharchitecturekotlin.post.service.PostService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

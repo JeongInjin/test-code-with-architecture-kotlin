@@ -3,7 +3,7 @@ package com.me.injin.testcodewitharchitecturekotlin.post.domain
 import com.me.injin.testcodewitharchitecturekotlin.user.domain.User
 import java.time.Clock
 
-class Post(
+data class Post(
     var id: Long? = null,
     var content: String? = null,
     var createdAt: Long? = null,

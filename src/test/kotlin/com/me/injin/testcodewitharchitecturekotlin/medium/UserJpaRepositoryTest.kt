@@ -1,6 +1,7 @@
-package com.me.injin.testcodewitharchitecturekotlin.user.infrastructure
+package com.me.injin.testcodewitharchitecturekotlin.medium
 
 import com.me.injin.testcodewitharchitecturekotlin.user.domain.UserStatus
+import com.me.injin.testcodewitharchitecturekotlin.user.infrastructure.UserJpaRepository
 import org.assertj.core.api.Java6Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

@@ -1,7 +1,8 @@
-package com.me.injin.testcodewitharchitecturekotlin.user.service
+package com.me.injin.testcodewitharchitecturekotlin.medium
 
 import com.me.injin.testcodewitharchitecturekotlin.user.domain.UserCreate
 import com.me.injin.testcodewitharchitecturekotlin.user.domain.UserStatus
+import com.me.injin.testcodewitharchitecturekotlin.user.service.UserService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.any
