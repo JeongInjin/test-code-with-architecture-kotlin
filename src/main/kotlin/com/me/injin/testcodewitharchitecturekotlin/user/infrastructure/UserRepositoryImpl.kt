@@ -11,7 +11,7 @@ class UserRepositoryImpl(
     private val userJpaRepository: UserJpaRepository,
 ) : UserRepository {
     override fun findById(id: Long): User? {
-        return userJpaRepository.findById(id).map(UserEntity::to).orElse(null)
+        return userJpaRepository.findById(id).map(UserEntity::toModel).orElse(null)
     }
 
     override fun getById(id: Long): User {
@@ -19,15 +19,15 @@ class UserRepositoryImpl(
     }
 
     override fun findByIdAndStatus(id: Long, userStatus: UserStatus): User? {
-        return userJpaRepository.findByIdAndStatus(id, userStatus)?.to()
+        return userJpaRepository.findByIdAndStatus(id, userStatus)?.toModel()
     }
 
     override fun findByEmailAndStatus(email: String?, userStatus: UserStatus): User? {
-        return userJpaRepository.findByEmailAndStatus(email, userStatus)?.to()
+        return userJpaRepository.findByEmailAndStatus(email, userStatus)?.toModel()
     }
 
     override fun save(user: User): User {
-        return userJpaRepository.save(UserEntity.from(user)).to()
+        return userJpaRepository.save(UserEntity.from(user)).toModel()
     }
 
 }

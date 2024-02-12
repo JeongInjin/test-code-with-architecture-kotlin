@@ -36,13 +36,13 @@ class PostEntity(
         }
     }
 
-    fun to(): Post {
+    fun toModel(): Post {
         return Post(
             id = id,
             content = content,
             createdAt = createdAt,
             modifiedAt = modifiedAt,
-            writer = writer.to(),
+            writer = writer.toModel(),
         )
     }
 }

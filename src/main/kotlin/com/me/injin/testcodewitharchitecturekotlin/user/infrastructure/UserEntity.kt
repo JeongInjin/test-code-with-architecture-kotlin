@@ -44,7 +44,7 @@ class UserEntity(
         }
     }
 
-    fun to(): User {
+    fun toModel(): User {
         return User(
             id = id,
             email = email,
