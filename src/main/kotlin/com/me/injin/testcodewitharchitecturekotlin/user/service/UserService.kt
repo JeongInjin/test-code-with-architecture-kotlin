@@ -1,6 +1,8 @@
 package com.me.injin.testcodewitharchitecturekotlin.user.service
 
 import com.me.injin.testcodewitharchitecturekotlin.common.domain.exception.ResourceNotFoundException
+import com.me.injin.testcodewitharchitecturekotlin.common.service.port.ClockHolder
+import com.me.injin.testcodewitharchitecturekotlin.common.service.port.UuidHolder
 import com.me.injin.testcodewitharchitecturekotlin.user.domain.User
 import com.me.injin.testcodewitharchitecturekotlin.user.domain.UserCreate
 import com.me.injin.testcodewitharchitecturekotlin.user.domain.UserStatus
@@ -15,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional
 class UserService(
     private val userRepository: UserRepository,
     private val certificationService: CertificationService,
+    private val uuidHolder: UuidHolder,
+    private val clockHolder: ClockHolder,
 ) {
 
     fun getByEmail(email: String?): User {
@@ -30,7 +34,7 @@ class UserService(
 
     @Transactional
     fun create(userCreate: UserCreate): User {
-        var user = User.from(userCreate)
+        var user = User.from(userCreate, uuidHolder)
         user = userRepository.save(user)
         certificationService.send(user.email, user.id!!, user.certificationCode)
         return user
@@ -46,7 +50,7 @@ class UserService(
     @Transactional
     fun login(id: Long) {
         var user = userRepository.findById(id) ?: throw ResourceNotFoundException("User", id.toString())
-        user = user.login()
+        user = user.login(clockHolder)
         userRepository.save(user)
     }
 

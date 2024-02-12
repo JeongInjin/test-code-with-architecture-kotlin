@@ -1,35 +1,41 @@
 package com.me.injin.testcodewitharchitecturekotlin.user.domain
 
 import com.me.injin.testcodewitharchitecturekotlin.common.domain.exception.CertificationCodeNotMatchedException
-import java.time.Clock
-import java.util.*
+import com.me.injin.testcodewitharchitecturekotlin.common.service.port.ClockHolder
+import com.me.injin.testcodewitharchitecturekotlin.common.service.port.UuidHolder
 
 class User(
-    val id: Long? = null,
-    val email: String,
+    var id: Long? = null,
+    var email: String,
     var nickname: String,
     var address: String,
-    val certificationCode: String,
+    var certificationCode: String,
     var status: UserStatus? = UserStatus.PENDING,
     var lastLoginAt: Long? = null,
 ) {
     companion object {
-        fun from(userCreate: UserCreate): User {
+        fun from(userCreate: UserCreate, uuidHolder: UuidHolder): User {
             return User(
                 email = userCreate.email,
                 nickname = userCreate.nickname,
                 address = userCreate.address,
-                certificationCode = UUID.randomUUID().toString(),
+                certificationCode = uuidHolder.random(),
             )
         }
     }
 
-    fun update(userUpdate: UserUpdate) {
+    fun update(userUpdate: UserUpdate): User {
+        this.id = id
+        this.email = email
         this.nickname = userUpdate.nickname
         this.address = userUpdate.address
+        this.certificationCode = certificationCode
+        this.status = status
+        this.lastLoginAt = lastLoginAt
+        return this
     }
 
-    fun login(): User {
+    fun login(clockHolder: ClockHolder): User {
         return User(
             id = id,
             email = email,
@@ -37,7 +43,7 @@ class User(
             address = address,
             certificationCode = certificationCode,
             status = status,
-            lastLoginAt = Clock.systemUTC().millis(),
+            lastLoginAt = clockHolder.millis(),
         )
     }
 
