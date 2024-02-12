@@ -8,5 +8,6 @@ interface UserRepository {
     fun findByEmailAndStatus(email: String?, userStatus: UserStatus): User?
     fun save(user: User): User
     fun findById(id: Long): User?
+    fun getById(id: Long): User
 
 }

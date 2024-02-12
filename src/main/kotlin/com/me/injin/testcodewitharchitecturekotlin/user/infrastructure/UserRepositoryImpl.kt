@@ -1,5 +1,6 @@
 package com.me.injin.testcodewitharchitecturekotlin.user.infrastructure
 
+import com.me.injin.testcodewitharchitecturekotlin.common.domain.exception.ResourceNotFoundException
 import com.me.injin.testcodewitharchitecturekotlin.user.domain.User
 import com.me.injin.testcodewitharchitecturekotlin.user.domain.UserStatus
 import com.me.injin.testcodewitharchitecturekotlin.user.service.port.UserRepository
@@ -11,6 +12,10 @@ class UserRepositoryImpl(
 ) : UserRepository {
     override fun findById(id: Long): User? {
         return userJpaRepository.findById(id).map(UserEntity::toModel).orElse(null)
+    }
+
+    override fun getById(id: Long): User {
+        return findById(id) ?: throw ResourceNotFoundException("User", id.toString())
     }
 
     override fun findByIdAndStatus(id: Long, userStatus: UserStatus): User? {

@@ -1,7 +1,7 @@
 package com.me.injin.testcodewitharchitecturekotlin.post.domain
 
+import com.me.injin.testcodewitharchitecturekotlin.common.service.port.ClockHolder
 import com.me.injin.testcodewitharchitecturekotlin.user.domain.User
-import java.time.Clock
 
 data class Post(
     var id: Long? = null,
@@ -11,21 +11,21 @@ data class Post(
     var writer: User,
 ) {
     companion object {
-        fun from(writer: User, postCreate: PostCreate): Post {
+        fun from(writer: User, postCreate: PostCreate, clockHolder: ClockHolder): Post {
             return Post(
                 content = postCreate.content,
                 writer = writer,
-                createdAt = Clock.systemUTC().millis()
+                createdAt = clockHolder.millis()
             )
         }
     }
 
-    fun update(postUpdate: PostUpdate): Post {
+    fun update(postUpdate: PostUpdate, clockHolder: ClockHolder): Post {
         return Post(
             id = this.id,
             content = postUpdate.content,
             createdAt = this.createdAt,
-            modifiedAt = Clock.systemUTC().millis(),
+            modifiedAt = clockHolder.millis(),
             writer = this.writer
         )
     }
